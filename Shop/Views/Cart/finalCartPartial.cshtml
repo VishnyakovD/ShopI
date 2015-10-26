@@ -1,0 +1,99 @@
+﻿    @model Shop.Models.CartModel
+           
+
+
+    @if (Model != null)
+    {
+        if (Model.cart != null)
+        {
+
+            using (Ajax.BeginForm("EditCart", "Cart", new AjaxOptions() { UpdateTargetId = "cartDataMessage" }))
+            {
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary(false)
+                <input type="hidden" name="idCart" id="idCart" value="@Model.cart.id" />
+        
+                <div class="row">
+                    <div class="col-md-12">
+                        <div id="cartDataMessage"></div> 
+                    </div>
+                </div> 
+        
+                   <div class="row">
+                       <div class="col-md-4">
+                           <label>Клиент :</label> <input type="text" name="nameClient" id="nameClient" value="@Model.cart.nameClient" required="" />
+                       </div>
+                       
+                       <div class="col-md-4">
+                           <label>Телефон :</label> <input type="text" name="phone" id="phone" value="@Model.cart.phone" required="" />
+                       </div>  
+                       <div class="col-md-4">
+                           <label>e-mail :</label> <input type="text" name="email" id="email" value="@Model.cart.email" />
+                      </div>
+                </div> 
+        <p></p>
+                <div class="row">
+                    <div class="col-md-12">
+                        <label>Комментарий </label>
+                        <textarea class="col-md-12" name="comment" id="comment">@Model.cart.comment</textarea>
+                    </div>
+                </div>
+         <p></p>
+                <div class="row">
+                    <div class="col-md-2 final-cart-adress-row">
+                        <label>Город</label> <input type="text" name="city" id="city" value="@Model.cart.city" />
+                    </div>
+                    <div class="col-md-2 final-cart-adress-row">
+                        <label>Улица</label> <input type="text" name="street" id="street" value="@Model.cart.street" />
+                    </div>
+                    <div class="col-md-2 final-cart-adress-row">
+                        <label>Дом</label> <input type="text" name="numHome" id="numHome" value="@Model.cart.numHome" />
+                    </div>
+                    <div class="col-md-2 final-cart-adress-row">
+                        <label>Квартира</label> <input type="text" name="numFlat" id="numFlat" value="@Model.cart.numFlat" />
+                    </div>
+                </div>
+         <p></p>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div id="listSku">
+                            @{ Html.RenderPartial("ListSkuInCartFinalPartial", Model); }
+                        </div>  
+                    </div>
+                </div> 
+        <p></p>
+                <div class="row">
+                    <div class="col-md-12">
+                        <label>Статус</label>
+                        <select id="stateValue" name="stateValue">
+                            @foreach (var st in Model.listState)
+                            {
+                                if (st.value == Model.cart.state.value)
+                                {
+                                    <option selected value="@st.value">@st.name</option>
+                                }
+                                else
+                                {
+                                    <option value="@st.value">@st.name</option>
+                                }
+                            }
+                        </select>
+                        <input type="submit" value="Сохранить" />
+                    </div>
+                </div>  
+         
+              
+      
+             
+              
+              
+            
+
+
+        
+
+                
+            }
+
+        }
+    }

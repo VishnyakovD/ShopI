@@ -1,0 +1,28 @@
+﻿@model Shop.db.Entities.StaticSpecification
+
+@using (Ajax.BeginForm("AddOrUpdateStaticSpecification", "Admin", new AjaxOptions { UpdateTargetId = "ServerMessage" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <div class="panel panel-default">
+        <div class="panel-heading panel-head-color">
+            <p>Добавление спецификаций</p>
+        </div>
+        <div class="panel-body panel-body-color">
+            @if (Model != null && Model.id > 0)
+            {
+                <input type="hidden" id="id" name="id" value="@Model.id" />
+            }
+
+            <label>Название</label>
+            @Html.TextBoxFor(model => model.name, new { @required = "" })
+            @Html.ValidationMessageFor(model => model.name)
+
+            <input class="btn btn-blue" type="submit" value="Сохранить" />
+        </div>
+</div>
+
+
+
+}

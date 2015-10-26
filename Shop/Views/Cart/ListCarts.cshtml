@@ -1,0 +1,113 @@
+﻿@using Shop.Models
+@model ListCartsModel
+@{
+    ViewBag.Title = "Список заказов";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@if (Model != null && Model.listCarts != null)
+{
+
+    using (Html.BeginForm("ListCarts", "Cart"/*, new AjaxOptions() { UpdateTargetId = "cartData" }*/))
+            {
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary(false)
+                    <div class="row">
+                    <div class="col-md-12">
+                        <span>с</span>
+                        <input type="dateJQ" name="start" id="start" value="@Model.startDate.Date.ToString("dd.MM.yyyy")" required="" />
+                        <span>по</span>
+                        <input type="dateJQ" name="end" id="end" value="@Model.endDate.Date.ToString("dd.MM.yyyy")" required="" />
+                        <span>Статус</span>
+                        <select id="stateValue" name="stateValue">
+                            @foreach (var st in Model.listState)
+                            {
+                                if (st.value == Model.state.value)
+                                {
+                                    <option selected value="@st.value">@st.name</option>
+                                }
+                                else
+                                {
+                                    <option value="@st.value">@st.name</option>
+                                }
+                            }
+                        </select>
+                        <input type="submit" value="Показать" />
+                    </div>
+                </div> 
+
+            }
+            <p></p>
+                                <div class="row">
+                                    <div id="listCarts" class="col-md-12">
+                                  
+                                            <table class="table table-bordered table-condensed">
+                                                <tr>
+                                                    <th>Заказ</th>
+                                                    <th>Дата</th>
+                                                    <th>Статус</th>
+                                                    <th>Клиент</th>
+                                                    <th>Телефон</th>
+                                                    <th>Комментарий</th>
+                                                    <th>Товары</th>
+                                                    <th>Город</th>
+                                                    <th>Улица</th>
+                                                    <th>Дом</th>
+                                                    <th>Квартира</th>
+                                                    <th></th>
+                                                </tr>
+                                                @foreach (var cart in Model.listCarts)
+            {
+                                                    <tr>
+                                                        <td>
+                                                            @Ajax.ActionLink(cart.cart.id.ToString(), "GetCart", new { idCart = cart.cart.id }, new AjaxOptions() { UpdateTargetId = "cartData" }, new { id = "editCart", onclick = "editCartClick()" })
+                                                        </td>
+                                                        <td>@cart.cart.state.name</td>
+                                                        <td>@cart.cart.createDate.ToString("dd.MM.yyyy")</td>
+                                                        <td>@cart.cart.nameClient</td>
+                                                        <td>@cart.cart.phone</td>
+                                                        <td>@cart.cart.comment</td>
+                                                        <td>
+
+                                                            <table class="table table-bordered table-condensed">
+                                                                <tr>
+                                                                    <th>Код товара</th>
+                                                                    <th>Товар</th>
+                                                                    <th>Цена/грн.</th>
+                                                                    <th>Количество</th>
+                                                                    <th>Общая стоимость</th>
+                                                                </tr>
+                                                                @foreach (var sku in cart.listSku)
+                                                                {
+                                                                    var price = cart.cart.listSku.First(s => s.idSku == sku.id).price * cart.cart.listSku.First(s => s.idSku == sku.id).count;
+                                                                    var priceAct = cart.cart.listSku.First(s => s.idSku == sku.id).priceAct * cart.cart.listSku.First(s => s.idSku == sku.id).count;
+
+                                                                    <tr>
+                                                                        <td>@sku.id</td>
+                                                                        <td>@string.Format("{0} {1} {2}", sku.listCategory.First().staticcat.name, sku.brand.name, sku.name)</td>
+                                                                        <td>@cart.cart.listSku.First(s => s.idSku == sku.id).priceAct.ToString("####.##")</td>
+                                                                        <td>@cart.cart.listSku.First(s => s.idSku == sku.id).count.ToString("####")</td>
+                                                                        <td>@string.Format("{0}грн", priceAct.ToString("####.##"))</td>
+                                                                    </tr>
+                                                                }
+
+                                                            </table>
+
+                                                        </td>
+                                                        <td>@cart.cart.city</td>
+                                                        <td>@cart.cart.street</td>
+                                                        <td>@cart.cart.numHome</td>
+                                                        <td>@cart.cart.numFlat</td>
+                                                        <td></td>
+                                                    </tr>
+            }
+                                            </table>
+                                    </div> 
+                                </div>
+
+                                        <div id="EditCartDialog" title="Информация о заказе">
+                                            <div id="cartData">
+                                            </div>
+                                        </div>
+                                        }
+

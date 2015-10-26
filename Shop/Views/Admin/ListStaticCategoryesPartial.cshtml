@@ -1,0 +1,33 @@
+﻿@using Shop.Models
+@model List<Shop.db.Entities.StaticCategory>
+
+
+
+<p>Список категорий</p>
+@if(Model!=null&&Model.Any())
+{ 
+     <table class="table table-bordered table-condensed">
+        <tr>
+            <th>ид</th>
+            <th>Название</th>
+
+            @*<th></th>*@
+        </tr>
+        @foreach (var category in Model)
+        {
+          <tr>
+            <td>@category.id</td>
+            <td>@category.name</td>
+            
+            @*<td></td>*@
+        </tr>
+        }
+      
+    </table>
+
+
+    }
+    else
+    {
+      <p>нет данных</p> 
+    }

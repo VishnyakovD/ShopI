@@ -1,0 +1,221 @@
+﻿@using Shop.Models
+@model SKUModel
+@{
+    ViewBag.Title = "Информация о товаре";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+    @if (Model != null)
+    {
+        if (Model.id > 0)
+        {
+            using (Html.BeginForm("UploadSmalPhoto", "Admin", FormMethod.Post, new {enctype = "multipart/form-data"}))
+            {
+                @Html.AntiForgeryToken()
+                <input type="hidden" id="id" name="id" value="@Model.id" />
+                <div class="row">
+                    <div class="col-md-12">
+                        <h4>Добавить/изменить маленькое фото</h4>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12 form-inline">
+                        <div class="form-group">
+                            <label>Фото</label>
+                        </div>
+                        <div class="form-group">
+                            <input type="file" name="smalPhotoFile" id="smalPhotoFile" />
+                        </div>
+                        <input type="submit" value="Добавить" />
+                    </div>
+                </div>
+            }
+        }
+        using (Html.BeginForm("AddOrUpdateSku", "Admin"))
+        {
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true)
+            <div id="ServerMessage"></div>
+
+            <div class="row">
+                <div class="col-md-3">
+                    @if (Model.id > 0)
+                    {
+                        <input type="hidden" id="id" name="id" value="@Model.id" />
+                        <div class="thumbnail">
+                            <img width="200" src="@Model.smalPhotoPath" />
+                        </div>
+                    }
+                </div>
+
+                <div class="col-md-3">
+                    <label>Название</label>
+                    <input type="text" id="name" name="name" placeholder="Название товара" value="@Model.name" />
+                </div>
+
+                <div class="col-md-2">
+                    <label>Цена</label>
+                    <input type="text" id="price" name="price" placeholder="Цена" style="width: 100px;" value="@Model.price" />
+                </div>
+
+                <div class="col-md-2">
+                    <label>Спец акт</label>
+                    <input type="text" id="priceAct" name="priceAct" placeholder="Спец. цена" style="width: 100px;" value="@Model.priceAct" />
+                </div>
+
+                <div class="col-md-2">
+                    <label>Бренд</label>
+                    <select id="brandId" name="brandId">
+                        @foreach (var brand in Model.listStaticBrand)
+                        {
+                            if (brand.id == Model.brandId)
+                            {
+                                <option selected value="@brand.id">@brand.name</option>
+                            }
+                            else
+                            {
+                                <option value="@brand.id">@brand.name</option>
+                            }
+                        }
+                    </select>
+                </div>
+            </div>
+          
+           
+            <div class="row">
+                <div class="col-md-12">
+                    <label>Описание товара</label>
+                    <textarea id="description" name="description" placeholder="Описание" style="width: 100%;">@Model.description</textarea>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <input class="pull-right" type="submit" value="Сохранить" />
+                </div>
+            </div>
+        }
+
+        if (Model.id > 0)
+                {
+                <div class="row">
+                        <div class="col-md-6">
+                            @if (Model.listStaticCategory.Any())
+                            {
+
+                                <table class="table table-bordered table-condensed">
+                                    <tr>
+                                        <th colspan="2"><h4>Категории товаров</h4></th>
+                                    </tr>
+                                    @foreach (var cat in Model.listStaticCategory)
+                                    {
+                                        <tr>
+                                            <td>
+                                                @cat.name
+                                            </td>
+                                            <td>
+                                                @Ajax.ActionLink("Добавить", "AddSKUFromCategory", "Admin", new { idSku = Model.id, catId = cat.id }, new AjaxOptions { UpdateTargetId = "listCategory" })
+                                            </td>
+                                        </tr>
+                                    }
+                                </table>
+                            }
+                        </div>
+                        <div class="col-md-6">
+                            <div id="listCategory">
+                                @{ Html.RenderPartial("SkuListCategoriesPartial", Model.listCategory); }
+                            </div>
+                        </div>
+                    </div>
+
+                <div class="row">
+                        <div class="col-md-12">
+                            <div id="listSpecification">
+                                @{ Html.RenderPartial("SkuListSpecificationPartial", Model.listSpecification); }
+                            </div>
+                    </div>
+                </div>
+
+               <div class="row">
+                   <div class="col-md-12  form-inline">
+                       @using (Ajax.BeginForm("AddSpecificationToSku", "Admin", new AjaxOptions { UpdateTargetId = "listSpecification" }))
+                       {
+                           @Html.AntiForgeryToken()
+                           @Html.ValidationSummary(true)
+                           <input type="hidden" id="idSku" name="idSku" value="@Model.id" />
+                           <div class="form-group">
+                               <label>Спецификация</label>
+                           </div>
+                           <div class="form-group">
+                               <select id="specId" name="specId">
+                                   @foreach (var spec in Model.listStaticSpecification)
+                                   {
+                                       <option value="@spec.id">@spec.name</option>
+                                   }
+                               </select>
+                           </div>
+                           <div class="form-group">
+                               <input type="text" id="specValue" name="specValue" required data-val="true" data-val-required="Это поле должно быть заполнено" />
+                               @Html.ValidationMessage("specValue")
+                           </div>
+                        <div class="form-group">
+                            <input type="submit" value="Добавить" />
+                        </div>
+                       }
+
+                   </div>
+
+                </div>
+                }
+                
+
+               
+                using (Html.BeginForm("UploadBigPhoto", "Admin", FormMethod.Post, new {enctype = "multipart/form-data"}))
+                {
+                            @Html.AntiForgeryToken()
+                          <input type="hidden" id="id" name="id" value="@Model.id" />
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h4>Добавить большое фото</h4>
+                        </div>
+                    </div>
+           
+                      <div class="row">
+                            <div class="col-md-12 form-inline">
+                                <div class="form-group">
+                                    <label>Фото</label>
+                                </div>
+                                <div class="form-group">
+                                    <input type="file" name="photoFile" id="photoFile" />
+                                </div>
+                                <input type="submit" value="Добавить" />
+                            </div>
+                        </div>
+   
+                }
+                
+                   <div class="row">
+                        <div class="col-md-12">
+                            <div id="listPhoto">
+                                @{ Html.RenderPartial("SkuListPhotosPartial", Model.listPhoto); }
+                            </div>
+                        </div> 
+                    </div>
+
+
+
+
+                }
+
+     
+
+
+
+   
+
+
+
+
+
+

@@ -1,0 +1,30 @@
+﻿@using Shop.Models
+@model List<Shop.Models.BrandModel>
+
+
+<p>Список брендов</p>
+@if(Model!=null&&Model.Any())
+{ 
+    <table class="table table-bordered table-condensed">
+        <tr>
+            <th>ид</th>
+            <th>Название</th>
+            @*<th></th>*@
+        </tr>
+        @foreach (var brand in Model)
+        {
+          <tr>
+            <td>@brand.id</td>
+            <td>@brand.name</td>
+            @*<td></td>*@
+        </tr>
+        }
+      
+    </table>
+
+
+    }
+    else
+{
+  <p>нет данных</p> 
+}

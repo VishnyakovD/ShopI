@@ -1,0 +1,55 @@
+﻿@using Shop.db.Entities
+@using Shop.Models
+@model Shop.Models.AdminModel
+@{
+    ViewBag.Title = "Страница администратора";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<ul class="nav nav-pills adm-panel-menu">
+    <li role="presentation" class="active adm-panel-menu-btn"><a href="@Url.Action("ListCarts","Cart")">Страница заказов</a></li>
+    <li role="presentation" class="active adm-panel-menu-btn"><a href="@Url.Action("Register","Account")">Создать пользователя</a></li>
+    <li role="presentation" class="active adm-panel-menu-btn"><a href="@Url.Action("RolesManager","Account")">Менеджер ролей</a></li>
+    <li role="presentation" class="active adm-panel-menu-btn"><a href="@Url.Action("SkuData", "Admin")">Создать товар</a></li>
+</ul>
+
+
+<div class="panel panel-default">
+    <div class="panel-heading panel-head-color">
+        @Ajax.ActionLink("Список брендов", "ListBrands", "Admin", new AjaxOptions { UpdateTargetId = "Brands" })
+    </div>
+    <div class="panel-body panel-body-color">
+        <div id="Brands"></div>
+    </div>
+</div>
+
+
+<div class="panel panel-default">
+    <div class="panel-heading panel-head-color">
+        @Ajax.ActionLink("Список категорий", "ListStaticCategoryes", "Admin", new AjaxOptions { UpdateTargetId = "Cats" })
+    </div>
+    <div class="panel-body panel-body-color">
+        <div id="Cats"></div>
+    </div>
+</div>
+
+
+<div class="panel panel-default">
+    <div class="panel-heading panel-head-color">
+        @Ajax.ActionLink("Список спецификаций", "ListStaticSpecification", "Admin", new AjaxOptions { UpdateTargetId = "Specs" })
+    </div>
+    <div class="panel-body panel-body-color">
+        <div id="Specs"></div>
+    </div>
+</div>
+
+
+    @{Html.RenderPartial("BrandDataPartial",new BrandModel());}
+
+
+    @{Html.RenderPartial("StaticCategoryDataPartial",new StaticCategory());}
+
+
+    @{Html.RenderPartial("StaticSpecificationDataPartial",new StaticSpecification());}
+
+

@@ -1,0 +1,24 @@
+﻿@using Shop.Models
+@model SkuViewerModel
+@{
+    if (Model != null)
+    {
+        ViewBag.Title = Model.Name;
+    }
+
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+@if (Model != null)
+{
+    Html.RenderPartial("sortingPartial", Model.IdCat);
+    <div class="row">
+        @foreach (var sku in Model.skuList)
+        {
+
+            Html.RenderPartial("ShortSkuPartial", sku);
+
+        }
+    </div>
+}

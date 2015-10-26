@@ -1,0 +1,37 @@
+﻿@model Shop.Models.MenuModel
+
+
+
+
+
+
+  
+   
+        <div class="container" id="headmenu">
+
+
+    <div class="menu">
+        @if (Model != null && Model.menu != null && Model.menu.Any())
+        {
+            foreach (var item in Model.menu)
+            {
+                <div><a href="@Url.Action("ListSkuOnCategory","Home",new {idCat=item.idCat})">@item.name</a></div>
+            }
+            <div class="cartPosition cart">
+
+            <a href="@Url.Action("BuyCart","Cart")">
+                Корзина
+                <span class="glyphicon glyphicon-shopping-cart"> </span>
+                <span id="Cart"></span>
+            </a>
+
+        </div>
+        }
+
+    </div>
+
+</div>
+
+
+
+    <div id="ServerMessage"></div>

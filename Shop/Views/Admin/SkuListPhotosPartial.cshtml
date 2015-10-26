@@ -1,0 +1,12 @@
+﻿@model IEnumerable<Shop.db.Entities.PhotoBig>
+
+    @if (Model!=null)
+    {
+        foreach (var pho in Model)
+        {
+        <span>
+            <img width="250" src="@pho.path" />
+            @Ajax.ActionLink("Удалить", "RemoveBigPhotoFromSKU", "Admin", new { idSku = pho.skuId, idPhoto =pho.id}, new AjaxOptions { UpdateTargetId = "listPhoto" })
+        </span>
+        }
+    }

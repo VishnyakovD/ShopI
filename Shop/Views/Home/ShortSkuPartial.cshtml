@@ -1,0 +1,46 @@
+﻿@model Shop.Models.ShortSKUModel
+
+@if (Model != null)
+{
+    <div class="col-sm-4 col-lg-4 col-md-4">
+        <div class="panel skuitem">
+            <img class="smallPhoto img-thumbnail" src="@Model.smalPhotoPath" />
+
+            <div class="caption">
+                <div>
+                    <h4>
+                        <a href="@Url.Action("SkuInfo", "Home", new { idSku = Model.id })">@Model.categotyName @Model.name</a>
+                    </h4>
+                </div>
+                @*<div class="row">
+                    <div class="col-md-12">
+                        @Model.description
+                    </div>
+                </div>*@
+            </div>
+
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="pricesBody">
+                        @if (Model.price > Model.priceAct)
+                        {
+                            <span class="priceBg">@Model.price.ToString("####")
+                                    <span class="currencyBg">грн</span>
+
+                            </span>
+                        }
+                        <span class="label priceSm">@Model.priceAct.ToString("####")<span class="currencySm">грн</span></span>
+
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+
+                    @Ajax.ActionLink("Купить", "AddToCart", "Cart", new { idSku = Model.id }, new AjaxOptions() { UpdateTargetId = "Cart" }, new { @class = "btn btn-blue btn-lg pull-right" })
+
+                </div>
+            </div>
+
+        </div>
+      </div>
+}

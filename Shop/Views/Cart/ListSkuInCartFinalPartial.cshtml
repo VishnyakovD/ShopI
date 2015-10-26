@@ -1,0 +1,28 @@
+﻿@using Shop.Models
+@model CartModel
+
+<table class="table table-bordered table-condensed">
+    <tr>
+        <th>Код товара</th>
+        <th>Товар</th>
+        <td>Цена/грн.</td>
+        <th>Количество</th>
+        <th>Общая стоимость</th>
+        <th></th>
+    </tr>
+    @foreach (var sku in Model.listSku)
+    {
+        <tr>
+            <td>@sku.id</td>
+            <td>@string.Format("{0} {1} {2}", sku.listCategory.First().staticcat.name, sku.brand.name, sku.name)</td>
+            <td>@Model.cart.listSku.First(s => s.idSku == sku.id).priceAct.ToString("####.##")</td>
+            <td>@Model.cart.listSku.First(s => s.idSku == sku.id).count.ToString("####")</td>
+            <td>@string.Format("{0}грн", (Model.cart.listSku.First(s => s.idSku == sku.id).priceAct * Model.cart.listSku.First(s => s.idSku == sku.id).count).ToString("####.##"))</td>
+            <td>
+            @Ajax.ActionLink("Добавить", "AddToCartByIdCart", "Cart", new { idCart = Model.cart.id, idSku = sku.id }, new AjaxOptions { UpdateTargetId = "listSku" })
+            @Ajax.ActionLink("Удалить", "RemoveSkuFromCartByIdCart", "Cart", new { idCart = Model.cart.id, idSku = sku.id }, new AjaxOptions { UpdateTargetId = "listSku" })
+            </td>
+        </tr>
+    }
+
+</table>
